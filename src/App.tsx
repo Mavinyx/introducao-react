@@ -1,32 +1,44 @@
 import { useState } from "react"
 import { InputAdd } from "./components/InputAdd";
+import { ToDoItem } from "./components/ToDoItem";
+import { List } from "./components/List";
 
 export function App() {
   const [list, setList] = useState([
     {id:'1', label:'fazer café', complete: false},
-    {id:'2', label:'fazer almoço'},
-    {id:'3', label:'fazer janta'},
+    {id:'2', label:'fazer almoço', complete: false},
+    {id:'3', label:'fazer janta', complete: false},
   ]);
+
+  const handleAdd = (value:string) =>{
+        setList([
+          ...list,{id: (list.length+1).toString(),complete:false,label:value}
+        ]);
+  }
+  const handleRemove=(id:string)=>{
+    setList(list.filter(item => item.id !== id))
+  }
+  const handleComplete=(id:string)=>{
+    setList(list.map(item => ({...item, complete: item.id === id ? true : item.complete})))
+  }
     return (
       <>
       <InputAdd 
-      onAdd={(value)=>
-        setList([
-          ...list,{id: (list.length+1).toString(),complete:false,label:value}
-        ])
-      }
+      onAdd={handleAdd}
       />
       
-      <ol>
-        {list.map((listItem) =>
-          <li key={listItem.id}>
-              {listItem.label}
-              {listItem.complete ? 'concluido' : ''}
-              <button onClick={() => setList(list.map(item => ({...item, complete: item.id === listItem.id ? true : item.complete})))}> V</button>          
-              <button onClick={() => setList(list.filter(item => item.id !== listItem.id))}> X</button>          
-              </li>
-        )}        
-      </ol>
+      <List>
+        {list.map((listItem) => (
+          <ToDoItem
+            key={listItem.id}
+            id={listItem.id}
+            label={listItem.label}
+            complete={listItem.complete}
+            onComplete={() => handleComplete(listItem.id)}
+            onRemove={() => handleRemove(listItem.id)}
+          />
+          ))}        
+      </List>
       </>
     )
 }

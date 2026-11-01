@@ -6,19 +6,18 @@ interface IInputAddProps{
 
 export const InputAdd = (props: IInputAddProps) =>{
     const [value, setValue] = useState('');
+
+    const handleAdd = () =>{
+            props.onAdd(value);
+            setValue('')
+    }
     return (
         <div>
             <input 
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
             />
-            <button onClick={()=>
-                {
-                props.onAdd(value);
-                setValue('')
-                }}>
-                +
-            </button>        
+            <button onClick={handleAdd}>+</button>        
         </div>
     );
 }
