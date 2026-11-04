@@ -1,8 +1,11 @@
 import { useState } from "react"
+
+import { ToDoApi } from "./shared/services/api/ToDoApi";
 import { InputAdd } from "./components/InputAdd";
 import { ToDoItem } from "./components/ToDoItem";
 import { List } from "./components/List";
 
+ToDoApi.getAll();
 export function App() {
   const [list, setList] = useState([
     {id:'1', label:'fazer café', complete: false},
